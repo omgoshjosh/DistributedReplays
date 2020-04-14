@@ -2,10 +2,12 @@
 
 ## Setup
 - Install Python 3.6/pip
-- `pip3 install -r requirements.txt`
+- Create a virtual environment `py -m venv venv && source venv/Scripts/activate`, `py` should be however you run python 3
+  - in windows cmd you might not have to source it (i.e. `.\venv\Scripts\activate`), but in vs code integrated terminal (bash-like) you must `source /path/to/activate`
+- Install packages to your virtual environment `pip install -r requirements.txt`
 - Install and run Redis with default port + settings (Windows is included, [Ubuntu](https://redis.io/topics/quickstart))
 - Install postgreSQL ([Windows](https://www.enterprisedb.com/thank-you-downloading-postgresql?anid=1255928), [Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-16-04), [Mac](https://stackoverflow.com/a/35308200/2187510))
-- Make sure that postgreSQL is in the path
+- Make sure that postgreSQL is in the path and running
 - If only for local development [change the password in Ubuntu](https://blog.2ndquadrant.com/how-to-safely-change-the-postgres-user-password-via-psql/) to `postgres`
 - Ensure you have the latest LTS version of node and npm installed
 - Run `cd webapp`, `npm install`
@@ -17,7 +19,13 @@
 - `cd webapp`, `npm start`
 
 #### Windows
-- Run win_run.bat
+- Run win_run.bat or pick the commands out of that file and run them separately (for flask, set the environment variables in your call, see below)
+- There are 5 things to start, `frontend` (create-react-app living in the webapp directory), `backend` (flask app), `celery` (worker threads for lower priority or longer running tasks), `flower` (management console for workers), and `redis` (in memory key-value store).
+  - `redis/redis.exe`
+  - `FLASK_ENV=development FLASK_DEBUG=1 python RLBotServer.py`
+  - `celery -A backend.tasks.celery_worker.celery worker --pool=solo -l info`
+  - `celery flower -A backend.tasks.celery_worker.celery --port=5555`
+  - `cd webapp && npm start`
 - You can optionally kill the python process and start it in an IDE
 - You can log into psql command line with `psql postgresql://postgres:postgres@localhost`
 - If the included redis does not work here is [install directions](https://dingyuliang.me/redis-3-2-install-redis-windows/)

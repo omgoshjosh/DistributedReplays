@@ -1,5 +1,6 @@
 echo OFF
 title win_run
+set FLASK_ENV=development
 set FLASK_DEBUG=1
 start redis/redis-server.exe
 start cmd /k python RLBotServer.py
